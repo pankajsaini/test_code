@@ -9,7 +9,7 @@ class AuthorizationsController < ApplicationController
       auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
       redirect_to auth_obj.get_request_auth_code_url
     else
-      redirect_to return_message("error","required_parameters_missing") and return
+      redirect_to return_message("error","required_parameters_missing")
     end
   end
 

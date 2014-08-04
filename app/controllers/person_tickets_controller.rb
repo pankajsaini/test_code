@@ -50,12 +50,6 @@ class PersonTicketsController < ApplicationController
     else
       render :json => exception_message("Not Found",404,"person_id #{person_id} not found on zendesk").to_json and return
     end
-  end
-
-
-  def exception_message(mes,code,des)
-    exception_obj = ExceptionMessage.new(mes,code,des)
-    return exception_obj.message
-  end
+  end 
 
 end

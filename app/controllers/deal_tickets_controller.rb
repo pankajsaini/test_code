@@ -17,10 +17,9 @@ class DealTicketsController < ApplicationController
       associated_people =  pipeline_obj.get_associated_people(people_associated_deal["result"])
       authentication_key= AuthenticationKey.authenticate_subdomain(session[:subdomain])
       zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)
-      tickets(associated_people,zendeskApi_obj)
+      render :json => tickets(associated_people,zendeskApi_obj).to_json  , :status => 200 and return
     else
-      #exception_obj = ExceptionMessage.new(people_associated_deal["message"],people_associated_deal["status"],people_associated_deal["error"])
-      #render :json => exception_obj.message.to_json and return
+     render :json => exception_message(people_associated_deal["message"],people_associated_deal["status"],people_associated_deal["error"]).to_json and return
     end
   end
 

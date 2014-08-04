@@ -30,8 +30,7 @@ class PersonTicketsController < ApplicationController
         zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)
       get_all_person_tickets(email,zendeskApi_obj)
     else
-      exception_obj = ExceptionMessage.new("Not Found",404,"email address of person_id #{person_id} not found on pipelinedeals")
-      render :json => exception_obj.message.to_json and return
+      render :json => exception_message("Not Found",404,"email address of person_id #{person_id} not found on pipelinedeals").to_json and return
     end
   end
 
@@ -49,9 +48,14 @@ class PersonTicketsController < ApplicationController
           tickets = zendeskApi_obj.get_tickets
           render :json => tickets.to_json  , :status => 200 and return
         else
+      render :json => exception_message("Not Found",404,"person_id #{person_id} not found on zendesk").to_json and return
+    end
+  end
+
+
+  def exception_message(mes,code,des)
           exception_obj = ExceptionMessage.new("Not Found",404,"person_id #{person_id} not found on zendesk")
-          render :json => exception_obj.message.to_json and return
-        end 
+    return exception_obj.message
   end
 
 end

@@ -15,11 +15,26 @@ class Zendesk
     JsonParser::response_parse(json_data)
   end
 
-  def get_tickets
+  def get_tickets_by_api
     json_data = HTTParty.get(build_uri(@user_id, "tickets"), :headers => {"Authorization" => "#{@token_type} #{@access_token}"})
     data = JsonParser::response_parse(json_data)
     return JsonParser::parse_tickets(data)
   end
+
+
+  def get_all_tickets(associated_people)
+    data_array = []
+    associated_people.each {|email|
+      self.person_email = email
+      person_obj = self.get_person_by_email
+      response = Hash.new
+      response["email"]= email
+      response["tickets"] =nil
+      data_array <<  self.get_person_tickets(person_obj,response)
+    }
+    return data_array
+  end
+
 
 
   def get_person_tickets(person_obj,response)
@@ -27,11 +42,11 @@ class Zendesk
       unless person_obj["result"]["results"].blank?
         zendesk_user_id = person_obj["result"]["results"][0]["id"]
         self.user_id = zendesk_user_id
-        tickets = self.get_tickets
+        tickets = self.get_tickets_by_api
         response["tickets"] = tickets
       end
     end
-   return response
+    return response
   end
 
   private

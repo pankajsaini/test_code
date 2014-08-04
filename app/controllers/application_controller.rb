@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
     unless associated_people.blank?
       return zendeskApi_obj.get_all_tickets(associated_people)
     else
-      render :json => exception_message("Not Found",404,"email address of associated people not found on pipelinedeals").to_json and return
+      render :json => exception_message("Not Found",404,"email address not found").to_json and return
     end
   end
 

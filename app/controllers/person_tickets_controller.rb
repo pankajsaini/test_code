@@ -25,19 +25,20 @@ class PersonTicketsController < ApplicationController
 
   def get_person_tickets(person)
     if person["result"]["email"]
+      email = person["result"]["email"]
         authentication_key= AuthenticationKey.authenticate_subdomain(session[:subdomain])
         zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)
-      person_obj = get_person_obj(person["result"]["email"],zendeskApi_obj)
-      tickets(person_obj,zendeskApi_obj)
+      get_all_person_tickets(email,zendeskApi_obj)
     else
       exception_obj = ExceptionMessage.new("Not Found",404,"email address of person_id #{person_id} not found on pipelinedeals")
       render :json => exception_obj.message.to_json and return
     end
   end
 
-  def get_person_obj(email,zendeskApi_obj)
+  def get_all_person_tickets(email,zendeskApi_obj)
     zendeskApi_obj.person_email = email
-    return zendeskApi_obj.get_person_by_email
+    person_obj = zendeskApi_obj.get_person_by_email
+    tickets(person_obj,zendeskApi_obj)
   end
 
 

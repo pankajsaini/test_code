@@ -28,8 +28,7 @@ class DealTicketsController < ApplicationController
       render :json => tickets(associated_people,zendeskApi_obj).to_json  , :status => 200 and return
     else
       render :json => exception_message('Not Found',404,"Access Token not found").to_json and return
-    end
-
+    end 
   end
 
  

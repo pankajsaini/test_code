@@ -2,8 +2,10 @@ require "zendesk_auth"
 class AuthorizationsController < ApplicationController
 
   def new
-    if params[:subdomain] && params[:identifier] && params[:secret]
-      session[:subdomain],session[:identifier],session[:secret] = params[:subdomain],params[:identifier],params[:secret]
+    session[:subdomain] = params[:subdomain]
+    session[:identifier] = params[:identifier]
+    session[:secret] = params[:secret]
+    if params[:subdomain] && params[:identifier] && params[:secret] 
       auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
       redirect_to auth_obj.get_request_auth_code_url
     else

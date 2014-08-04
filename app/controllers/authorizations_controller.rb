@@ -2,9 +2,7 @@ require "zendesk_auth"
 class AuthorizationsController < ApplicationController
 
   def new
-    session[:subdomain] = params[:subdomain]
-    session[:identifier] = params[:identifier]
-    session[:secret] = params[:secret]
+    set_session(params)
     if params[:subdomain] && params[:identifier] && params[:secret] 
       auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
       redirect_to auth_obj.get_request_auth_code_url
@@ -49,6 +47,13 @@ class AuthorizationsController < ApplicationController
 
   def return_message(messages_type,message)
     URI.encode("https://www.pipelinedeals.com/admin/partner_integrations?#{messages_type}=#{message}")
+  end
+
+
+  def set_session(params)
+    session[:subdomain] = params[:subdomain]
+    session[:identifier] = params[:identifier]
+    session[:secret] = params[:secret]
   end
 
 end

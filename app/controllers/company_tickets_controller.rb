@@ -8,13 +8,13 @@ class CompanyTicketsController < ApplicationController
     api_key = params[:api_key]
     pipeline_obj = PipelineDeals.new(api_key)
     people_associated_company = get_company_details(pipeline_obj,api_key,company_id)
-    if people_associated_company["status"] == 200
-      associated_people =  pipeline_obj.get_associated_people(people_associated_company["result"])
-      get_company_tickets(associated_people)
-    else
-      exception_obj = ExceptionMessage.new(people_associated_company["message"],people_associated_company["status"],people_associated_company["error"])
-      render :json => exception_obj.message.to_json and return
-    end
+    #if people_associated_company["status"] == 200
+    #  associated_people =  pipeline_obj.get_associated_people(people_associated_company["result"])
+    #  get_company_tickets(associated_people)
+    #else
+    #  exception_obj = ExceptionMessage.new(people_associated_company["message"],people_associated_company["status"],people_associated_company["error"])
+    #  render :json => exception_obj.message.to_json and return
+    #end
 
   end
 

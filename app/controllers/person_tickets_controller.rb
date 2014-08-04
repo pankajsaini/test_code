@@ -24,8 +24,8 @@ class PersonTicketsController < ApplicationController
   end
 
   def get_person_tickets(person)
-    if person["result"]["email"]
       email = person["result"]["email"]
+    if email
         authentication_key= AuthenticationKey.authenticate_subdomain(session[:subdomain])
         zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)
       get_all_person_tickets(email,zendeskApi_obj)

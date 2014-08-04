@@ -1,9 +1,7 @@
 PipelineZendeskApp::Application.routes.draw do
-  get "deal_tickets/show"
-  get "company_tickets/show"
-  get "person_tickets/show"
   get "authorizations/new"
   get "authorizations/get_access_token"
+  resource :deal_tickets,:person_tickets,:company_tickets,  only: [:show]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

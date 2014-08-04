@@ -1,0 +1,29 @@
+development:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: pipeline_zendesk
+  pool: 5
+  username: root
+  password: 
+  host: localhost
+  
+test:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: pipeline_zendesk
+  pool: 5
+  username: 
+  password: 
+  host:
+
+production:
+  adapter: mysql
+  encoding: utf8
+  reconnect: false
+  database: pipeline_zendesk
+  pool: 5
+  username: 
+  password: 
+  host: 

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  subdomain: MyString
+  unique_identifier: MyString
+  secret: MyString
+  access_token: MyString
+  token_type: MyString
+
+two:
+  subdomain: MyString
+  unique_identifier: MyString
+  secret: MyString
+  access_token: MyString
+  token_type: MyString

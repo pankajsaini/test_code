@@ -1,31 +1,28 @@
 require "zendesk_auth"
 class AuthorizationsController < ApplicationController
+  before_filter :only => [:new] do |c| c.required_auth_parameter params[:subdomain],params[:identifier],params[:secret] end
 
+  #redirect to zendesk for app authorizations
   def new
-    set_session(params)
-    if params[:subdomain] && params[:identifier] && params[:secret] 
       auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
       redirect_to auth_obj.get_request_auth_code_url
-    else
-      redirect_to return_message("error","required_parameters_missing")
-    end
   end
 
-
+  #get code params from zendesk and make request for get access_token and token_type.
   def get_access_token
-    # zendesk outh URL return response in this method.
     unless params[:code].blank?
       auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
       auth_obj.code = params[:code]
       response = auth_obj.get_access_token
-      get_access_token_by_auth_code(response)
+      save_access_token(response)
     else
       redirect_to return_message("error","auth_code_not_found") and return
     end
 
   end
 
-  def get_access_token_by_auth_code(response)
+  #method for updating or creating access token
+  def save_access_token(response)
     unless response.empty?
       authentication_key= AuthenticationKey.authenticate_subdomain(session[:subdomain])
       store_access_token(authentication_key,response)
@@ -46,14 +43,18 @@ class AuthorizationsController < ApplicationController
 
 
   def return_message(messages_type,message)
-    URI.encode("https://www.pipelinedeals.com/admin/partner_integrations?#{messages_type}=#{message}")
+    "https://www.pipelinedeals.com/admin/partner_integrations?#{messages_type}=#{message}"
   end
 
-
-  def set_session(params)
-    session[:subdomain] = params[:subdomain]
-    session[:identifier] = params[:identifier]
-    session[:secret] = params[:secret]
+  #method for creating session
+  def required_auth_parameter(subdomain,identifier,secret)
+    if subdomain.blank? or identifier.blank? or secret.blank?
+      redirect_to return_message("error","required_parameters_missing")
+    else
+    session[:subdomain] = subdomain
+    session[:identifier] = identifier
+    session[:secret] = secret
+    end
   end
 
 end

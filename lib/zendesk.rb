@@ -21,6 +21,18 @@ class Zendesk
     return JsonParser::parse_tickets(data)
   end
 
+  def get_person_tickets(person_obj,response)
+    if person_obj["status"] == 200
+      unless person_obj["result"]["results"].blank?
+        zendesk_user_id = person_obj["result"]["results"][0]["id"]
+        self.user_id = zendesk_user_id
+        tickets = self.get_tickets_by_api
+        response["tickets"] = tickets
+      end
+    end
+    return response
+  end
+
 
   def get_all_tickets(associated_people)
     data_array = []
@@ -33,20 +45,6 @@ class Zendesk
       data_array <<  self.get_person_tickets(person_obj,response)
     }
     return data_array
-  end
-
-
-
-  def get_person_tickets(person_obj,response)
-    if person_obj["status"] == 200
-      unless person_obj["result"]["results"].blank?
-        zendesk_user_id = person_obj["result"]["results"][0]["id"]
-        self.user_id = zendesk_user_id
-        tickets = self.get_tickets_by_api
-        response["tickets"] = tickets
-      end
-    end
-    return response
   end
 
   private

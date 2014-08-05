@@ -1,16 +1,17 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  def tickets(associated_people,zendeskApi_obj)
-    unless associated_people.blank?
-      return zendeskApi_obj.get_all_tickets(associated_people)
-    else
-      render :json => exception_message("Not Found",404,"email address not found").to_json and return
-    end
+
+  def exception_message(mes,code,description)
+    exception_obj = ExceptionMessage.new(mes,code,description)
+    return exception_obj.message
   end
 
-  def exception_message(mes,code,des)
-    exception_obj = ExceptionMessage.new(mes,code,des)
-    return exception_obj.message
+  def required_parameters(subdomain,id,key)
+    if subdomain.blank? or id.blank? or key.blank?
+      render :json => exception_message('Bad Request',400,'required parameters missing').to_json, :status => 400  and return
+    else
+      session[:subdomain] = params[:subdomain]
+    end
   end
 
 end

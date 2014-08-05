@@ -23,6 +23,10 @@ end
 gem 'jquery-rails'
 gem 'httparty', '~> 0.13.1'
 
+group :test, :development do
+  gem 'rspec-rails', '2.14.0'
+end
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

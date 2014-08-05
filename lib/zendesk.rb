@@ -10,15 +10,16 @@ class Zendesk
     @find_tickets_uri = @base_uri + "users/"
   end
 
+  #api for find person by email
   def get_person_by_email
     json_data = HTTParty.get(build_uri(@person_email, "email"), :headers => {"Authorization" => "#{@token_type} #{@access_token}"})
     JsonParser::response_parse(json_data)
   end
 
+  #api for getting all tickets
   def get_tickets_by_api
     json_data = HTTParty.get(build_uri(@user_id, "tickets"), :headers => {"Authorization" => "#{@token_type} #{@access_token}"})
-    data = JsonParser::response_parse(json_data)
-    return JsonParser::parse_tickets(data)
+    return JsonParser::parse_tickets(JsonParser::response_parse(json_data))
   end
 
   def get_person_tickets(person_obj,response)

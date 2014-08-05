@@ -11,6 +11,7 @@ class CompanyTicketsController < ApplicationController
     pipeline_people_associated_with_company(pipeline_obj)
   end
 
+  #method for getting people emails associated with company
   def pipeline_people_associated_with_company(pipeline_obj)
     people_associated_company = pipeline_obj.get_company_details
     if people_associated_company["status"] == 200
@@ -30,6 +31,7 @@ class CompanyTicketsController < ApplicationController
     end
   end
 
+  #method for getting tickets details
   def get_people_tickets(authentication_key,associated_people)
     if authentication_key
       zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)

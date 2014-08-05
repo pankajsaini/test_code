@@ -25,11 +25,9 @@ class PipelineDeals
     JsonParser::response_parse(json_data)
   end
 
-
-   def get_associated_people(json)
+  def get_associated_people(json)
     JsonParser::data_parse_for_email(json)
   end
-
 
   private
 

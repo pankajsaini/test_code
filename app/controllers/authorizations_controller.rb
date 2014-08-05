@@ -4,8 +4,8 @@ class AuthorizationsController < ApplicationController
 
   #redirect to zendesk for app authorizations
   def new
-      auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
-      redirect_to auth_obj.get_request_auth_code_url
+    auth_obj = ZendeskAuth.new(session[:subdomain],session[:identifier],session[:secret],authorizations_get_access_token_url)
+    redirect_to auth_obj.get_request_auth_code_url
   end
 
   #get code params from zendesk and make request for get access_token and token_type.
@@ -18,7 +18,6 @@ class AuthorizationsController < ApplicationController
     else
       redirect_to return_message("error","auth_code_not_found") and return
     end
-
   end
 
   #method for updating or creating access token
@@ -41,7 +40,6 @@ class AuthorizationsController < ApplicationController
     end
   end
 
-
   def return_message(messages_type,message)
     "https://www.pipelinedeals.com/admin/partner_integrations?#{messages_type}=#{message}"
   end
@@ -51,9 +49,9 @@ class AuthorizationsController < ApplicationController
     if subdomain.blank? or identifier.blank? or secret.blank?
       redirect_to return_message("error","required_parameters_missing")
     else
-    session[:subdomain] = subdomain
-    session[:identifier] = identifier
-    session[:secret] = secret
+      session[:subdomain] = subdomain
+      session[:identifier] = identifier
+      session[:secret] = secret
     end
   end
 

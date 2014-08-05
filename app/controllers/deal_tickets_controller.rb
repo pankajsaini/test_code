@@ -12,6 +12,7 @@ class DealTicketsController < ApplicationController
     pipeline_people_associated_with_deal(pipeline_obj)
   end
 
+  #method for getting people emails associated with deal
   def pipeline_people_associated_with_deal(pipeline_obj)
     people_associated_deal = pipeline_obj.get_deal_details
     if people_associated_deal["status"] == 200
@@ -30,11 +31,11 @@ class DealTicketsController < ApplicationController
       render :json => exception_message("Not Found",404,"email address not found").to_json , :status=> 404 and return
     end
   end
-
+  #method for getting tickets details
   def get_people_tickets(authentication_key,associated_people)
     if authentication_key
       zendeskApi_obj = Zendesk.new(authentication_key.subdomain, authentication_key.access_token, authentication_key.token_type)
-       render :json => zendeskApi_obj.get_all_tickets(associated_people).to_json  , :status => 200 and return
+      render :json => zendeskApi_obj.get_all_tickets(associated_people).to_json  , :status => 200 and return
     else
       render :json => exception_message('Unauthorized',401,"Access Token not found").to_json, :status => 401 and return
     end
